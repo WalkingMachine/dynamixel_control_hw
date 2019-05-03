@@ -3,7 +3,7 @@ project(dynamixel_control_hw)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(LIBDYNAMIXEL "")
+set(LIBDYNAMIXEL "/home/philippe/libdynamixel")
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -27,7 +27,7 @@ if ("$ENV{RESIBOTS_DIR}" STREQUAL "" AND "${LIBDYNAMIXEL}" STREQUAL "")
   set(libdynamixel_dir "~")
 elseif (NOT ("${LIBDYNAMIXEL}" STREQUAL ""))
   message("Using user-defined location for libdynamixel : ${LIBDYNAMIXEL}")
-  set(libdynamixel_dir "$ENV{LIBDYNAMIXEL}")
+  set(libdynamixel_dir "${LIBDYNAMIXEL}")
 elseif (NOT ("$ENV{RESIBOTS_DIR}" STREQUAL ""))
   message("Using enviromnetal-defined location for libdynamixel : $ENV{RESIBOTS_DIR}")
   set(libdynamixel_dir "$ENV{RESIBOTS_DIR}")
