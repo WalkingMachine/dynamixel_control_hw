@@ -122,6 +122,8 @@ namespace dynamixel {
         std::unordered_map<id_t, double> _dynamixel_max_speed;
         // Map for angle offsets (ID: correction in radians)
         std::unordered_map<id_t, double> _dynamixel_corrections;
+        // Map for external gears ratio (ID: external_gear_ratio)
+        std::unordered_map<id_t, double> _external_gear_ratios;
 
         // To get joint limits from the parameter server
         ros::NodeHandle _nh;
@@ -311,6 +313,15 @@ namespace dynamixel {
                 if (dynamixel_corrections_iterator != _dynamixel_corrections.end()) {
                     _joint_angles[i] -= dynamixel_corrections_iterator->second;
                 }
+
+                // Apply external_gear_ratio to joint, if any
+                typename std::unordered_map<id_t, double>::iterator
+                        external_gear_ratio_iterator
+                        = _external_gear_ratios.find(_servos[i]->id());
+                if (external_gear_ratio_iterator != _external_gear_ratios.end()) {
+                    _joint_angles[i] /= external_gear_ratio_iterator->second;
+                }
+
             }
             else {
                 ROS_WARN_STREAM("Did not receive any data when reading "
@@ -372,6 +383,13 @@ namespace dynamixel {
 
                 OperatingMode mode = _c_mode_map[_servos[i]->id()];
                 if (OperatingMode::joint == mode) {
+                    typename std::unordered_map<id_t, double>::iterator
+                            external_gear_ratio_iterator
+                            = _external_gear_ratios.find(_servos[i]->id());
+                    if (external_gear_ratio_iterator != _external_gear_ratios.end()) {
+                        command *= external_gear_ratio_iterator->second;
+                    }
+
                     typename std::unordered_map<id_t, double>::iterator
                         dynamixel_corrections_iterator
                         = _dynamixel_corrections.find(_servos[i]->id());
@@ -476,6 +494,13 @@ namespace dynamixel {
                             = static_cast<double>(servos_param[it->first]["offset"]);
                         ROS_DEBUG_STREAM("\toffset: "
                             << _dynamixel_corrections[id]);
+                    }
+
+                    if (it->second.hasMember("external_gear_ratio")) {
+                        _external_gear_ratios[id]
+                                = static_cast<double>(servos_param[it->first]["external_gear_ratio"]);
+                        ROS_DEBUG_STREAM("\texternal_gear_ratio: "
+                                                 << _external_gear_ratios[id]);
                     }
 
                     if (it->second.hasMember("command_interface")) {
