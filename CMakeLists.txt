@@ -3,7 +3,7 @@ project(dynamixel_control_hw)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(LIBDYNAMIXEL "/home/philippe/libdynamixel")
+set(LIBDYNAMIXEL "$ENV{HOME}/libdynamixel")
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
