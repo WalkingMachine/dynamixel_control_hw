@@ -422,6 +422,7 @@ namespace dynamixel {
                         && invert_iterator->second) {
                         command = -command;
                     }
+                    command = command < 0.05 && command > 0.05 ? 0 : command;
                     ROS_DEBUG_STREAM("Setting velocity for joint "
                         << _servos[i]->id() << " to " << command);
                     _dynamixel_controller.send(
