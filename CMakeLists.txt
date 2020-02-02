@@ -21,6 +21,11 @@ catkin_package(CATKIN_DEPENDS
   message_runtime
 )
 
+# Install libdynamixel
+execute_process (
+    COMMAND bash -c "../src/dynamixel_control_hw/install.sh"
+)
+
 # Searching for libdynamixel
 if ("$ENV{RESIBOTS_DIR}" STREQUAL "" AND "${LIBDYNAMIXEL}" STREQUAL "")
   message("Using default location for libdynamixel : ~")
