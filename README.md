@@ -26,9 +26,7 @@ We are currently working on the following features:
 
 ## Installation and usage
 
-`dynamixel_control_hw` depends on the [libdynamixel][] library. Please install it, it's light and quick.
-
-Then, you'll need to store the installation path of libdynamixel in the `LIBDYNAMIXEL` environment variable.
+`dynamixel_control_hw` depends on the [libdynamixel][] library. A script has been created to install it automatically. This script is automatically run on every CMake builds.
 
 Install the ros package ros_control. In apt-get, it is called `ros-YourDistro-ros-control` (where *YourDistro* must be changed by the ROS distribution's name, like indigo or jade).
 
